@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neelkanth Mehta — Quantitative Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #080c12;
+      --bg2:       #0e1420;
+      --bg3:       #141a24;
+      --border:    rgba(180,150,80,0.18);
+      --gold:      #c9a84c;
+      --gold-dim:  rgba(201,168,76,0.55);
+      --gold-faint:rgba(201,168,76,0.10);
+      --text:      #d8cfc0;
+      --text-dim:  #7a7060;
+      --text-muted:#4a4538;
+      --blue:      #5b9cf6;
+      --green:     #4caf7d;
+      --red:       #e05c5c;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-mono:    'IBM Plex Mono', monospace;
+      --font-body:    'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── GRID TEXTURE ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── TOP BAR ─── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,12,18,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 60px);
+      height: 58px;
+    }
+
+    .header-name {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid transparent;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 2px;
+    }
+
+    .tab-btn:hover { color: var(--gold); border-color: var(--border); }
+
+    .tab-btn.active {
+      color: var(--gold);
+      background: var(--gold-faint);
+      border-color: var(--gold-dim);
+    }
+
+    /* ─── TAB PANELS ─── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ─── MAIN WRAPPER ─── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 40px) 80px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding-bottom: 52px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 7vw, 68px);
+      font-weight: 300;
+      line-height: 1.08;
+      color: #f0e8d5;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-dim);
+      max-width: 520px;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all 0.2s;
+      background: transparent;
+    }
+
+    .pill:hover {
+      border-color: var(--gold-dim);
+      color: var(--gold);
+      background: var(--gold-faint);
+    }
+
+    .pill-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.6;
+    }
+
+    /* ─── COLLAPSIBLE SECTIONS ─── */
+    .section {
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .section:nth-child(2) { animation-delay: 0.05s; }
+    .section:nth-child(3) { animation-delay: 0.10s; }
+    .section:nth-child(4) { animation-delay: 0.15s; }
+    .section:nth-child(5) { animation-delay: 0.20s; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 0;
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+    }
+
+    .section-header:hover .section-title { color: var(--gold); }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: #e8dfc8;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+    }
+
+    .chevron {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+      transition: transform 0.3s ease, color 0.2s;
+    }
+
+    .section-header[aria-expanded="true"] .chevron {
+      transform: rotate(180deg);
+      color: var(--gold);
+    }
+
+    .section-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .section-body.open { max-height: 2000px; }
+
+    .section-inner {
+      padding-bottom: 36px;
+    }
+
+    /* ─── ABOUT ─── */
+    .about-text {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.85;
+      max-width: 680px;
+    }
+
+    .about-text p + p { margin-top: 16px; }
+
+    .about-text strong {
+      color: #e8dfc8;
+      font-weight: 500;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .stat-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 14px 20px;
+      border-radius: 2px;
+      min-width: 130px;
+    }
+
+    .stat-val {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    .skill-group {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 18px 20px;
+    }
+
+    .skill-group-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gold);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 4px 9px;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 20px;
+      padding: 20px 0;
+      border-top: 1px solid rgba(180,150,80,0.08);
+    }
+
+    .exp-item:first-child { border-top: none; padding-top: 0; }
+
+    .exp-meta { padding-top: 2px; }
+
+    .exp-firm {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .exp-period {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .exp-role {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 400;
+      color: #e8dfc8;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .exp-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.75;
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .exp-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 3px 7px;
+      border-radius: 2px;
+    }
+
+    /* ─── RESUME ─── */
+    .resume-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .resume-info h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: #e8dfc8;
+      margin-bottom: 4px;
+    }
+
+    .resume-info p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--bg);
+      background: var(--gold);
+      padding: 11px 22px;
+      border-radius: 2px;
+      transition: all 0.2s;
+      border: 1px solid var(--gold);
+      cursor: pointer;
+    }
+
+    .btn-download:hover {
+      background: transparent;
+      color: var(--gold);
+    }
+
+    /* ─── PROJECTS TAB ─── */
+    .projects-header {
+      padding: 40px 0 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .projects-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 300;
+      color: #f0e8d5;
+    }
+
+    .projects-header p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 28px 28px 24px;
+      transition: border-color 0.2s, background 0.2s;
+      animation: fadeUp 0.6s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--gold-dim);
+      background: var(--bg3);
+    }
+
+    .project-card:hover::before { opacity: 1; }
+
+    .project-card:nth-child(1) { animation-delay: 0.05s; }
+    .project-card:nth-child(2) { animation-delay: 0.10s; }
+    .project-card:nth-child(3) { animation-delay: 0.15s; }
+
+    .project-type {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gold);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: #e8dfc8;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .project-subtitle {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 14px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .project-finding {
+      background: var(--bg3);
+      border-left: 2px solid var(--gold-dim);
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      border-radius: 0 2px 2px 0;
+    }
+
+    .project-finding-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--gold);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .project-finding p {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .project-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    .project-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    .project-link:hover { opacity: 0.7; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 24px clamp(20px, 5vw, 60px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.10em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-link {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: var(--gold); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── EDU / CERTS GRID (desktop default) ─── */
+    .edu-certs-grid {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ─── RESPONSIVE: TABLET (641px – 1024px) ─── */
+    @media (max-width: 1024px) and (min-width: 641px) {
+
+      header {
+        padding: 0 28px;
+      }
+
+      main {
+        padding: 40px 28px 64px;
+      }
+
+      h1 {
+        font-size: clamp(36px, 6vw, 52px);
+      }
+
+      .hero-tagline {
+        font-size: 17px;
+      }
+
+      .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .exp-item {
+        grid-template-columns: 110px 1fr;
+        gap: 16px;
+      }
+
+      .stat-row {
+        gap: 12px;
+      }
+
+      .stat-box {
+        min-width: 110px;
+        padding: 12px 16px;
+      }
+
+      .edu-certs-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .resume-block {
+        padding: 22px 24px;
+      }
+
+      .projects-header h2 {
+        font-size: clamp(26px, 4vw, 38px);
+      }
+
+      .project-card {
+        padding: 22px 22px 20px;
+      }
+
+      .project-title {
+        font-size: 20px;
+      }
+
+      footer {
+        padding: 20px 28px;
+      }
+
+      .footer-copy {
+        font-size: 10px;
+        line-height: 1.7;
+        max-width: 560px;
+      }
+    }
+
+    /* ─── RESPONSIVE: LARGE PHONE (481px – 640px) ─── */
+    @media (max-width: 640px) {
+
+      header {
+        padding: 0 16px;
+        height: 52px;
+      }
+
+      .header-name {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .tab-btn {
+        font-size: 10px;
+        padding: 5px 11px;
+        letter-spacing: 0.06em;
+      }
+
+      main {
+        padding: 28px 16px 52px;
+      }
+
+      h1 {
+        font-size: clamp(30px, 9vw, 42px);
+      }
+
+      .hero {
+        padding-bottom: 32px;
+      }
+
+      .hero-label {
+        font-size: 10px;
+      }
+
+      .hero-sub {
+        font-size: 11px;
+      }
+
+      .hero-tagline {
+        font-size: 15px;
+        margin-bottom: 24px;
+      }
+
+      .hero-links {
+        gap: 7px;
+      }
+
+      .pill {
+        font-size: 10px;
+        padding: 6px 11px;
+      }
+
+      .section-header {
+        padding: 20px 0;
+      }
+
+      .section-title {
+        font-size: 18px;
+      }
+
+      .section-num {
+        font-size: 9px;
+      }
+
+      /* Skills — 2 columns on large phone */
+      .skills-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .skill-group {
+        padding: 12px 12px;
+      }
+
+      .skill-group-label {
+        font-size: 9px;
+        margin-bottom: 8px;
+      }
+
+      .skill-tag {
+        font-size: 10px;
+        padding: 3px 7px;
+      }
+
+      /* Experience — stack firm/period above role */
+      .exp-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 16px 0;
+      }
+
+      .exp-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-top: 0;
+      }
+
+      .exp-firm {
+        font-size: 10px;
+      }
+
+      .exp-period {
+        font-size: 10px;
+      }
+
+      .exp-role {
+        font-size: 16px;
+        margin-bottom: 6px;
+      }
+
+      .exp-desc {
+        font-size: 13px;
+      }
+
+      /* Stats — wrap naturally, smaller boxes */
+      .stat-row {
+        gap: 8px;
+      }
+
+      .stat-box {
+        min-width: 90px;
+        flex: 1;
+        padding: 10px 12px;
+      }
+
+      .stat-val {
+        font-size: 17px;
+      }
+
+      .stat-label {
+        font-size: 9px;
+      }
+
+      /* Resume block — stack vertically */
+      .resume-block {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 18px;
+        gap: 16px;
+      }
+
+      .resume-info h3 {
+        font-size: 17px;
+      }
+
+      /* Education / Certs — stack on large phone */
+      .edu-certs-grid {
+        grid-template-columns: 1fr;
+        margin-top: 20px;
+      }
+
+      /* Projects */
+      .projects-header {
+        padding: 24px 0 18px;
+        margin-bottom: 20px;
+      }
+
+      .projects-header h2 {
+        font-size: clamp(22px, 7vw, 32px);
+      }
+
+      .project-card {
+        padding: 18px 16px 16px;
+      }
+
+      .project-type {
+        font-size: 9px;
+      }
+
+      .project-title {
+        font-size: 18px;
+      }
+
+      .project-subtitle {
+        font-size: 10px;
+      }
+
+      .project-desc {
+        font-size: 13px;
+      }
+
+      .project-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      /* Footer — stack, wrap copyright text cleanly */
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 18px 16px;
+      }
+
+      .footer-copy {
+        font-size: 9px;
+        line-height: 1.7;
+        max-width: 100%;
+      }
+
+      .footer-links {
+        gap: 14px;
+      }
+
+      .footer-link {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="header-name">N. Mehta</div>
+    <nav class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('profile', this)">Profile</button>
+      <button class="tab-btn" onclick="switchTab('projects', this)">Projects</button>
+    </nav>
+  </header>
+
+  <!-- ════════════════════════════════
+       TAB: PROFILE
+  ════════════════════════════════ -->
+  <div id="tab-profile" class="tab-panel active">
+    <main>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-label">Quantitative Finance · Mumbai, India</div>
+        <h1>Neelkanth <em>Mehta</em></h1>
+        <div class="hero-sub">MSc Financial Engineering · WorldQuant University</div>
+        <p class="hero-tagline">
+          Building evidence-based strategies at the intersection of systematic research, credit analytics, and AI-driven modelling.
+        </p>
+        <div class="hero-links">
+          <a class="pill" href="https://linkedin.com/in/neelkanth-mehta" target="_blank">
+            <span class="pill-dot"></span> LinkedIn
+          </a>
+          <a class="pill" href="https://github.com/NeelkanthMehta" target="_blank">
+            <span class="pill-dot"></span> GitHub
+          </a>
+          <a class="pill" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3451859" target="_blank">
+            <span class="pill-dot"></span> SSRN Research
+          </a>
+          <a class="pill" href="https://outlook.live.com/mail/0/deeplink/compose?to=neilstrong2003@yahoo.com" target="_blank">
+            <span class="pill-dot"></span> Email
+          </a>
+        </div>
+      </section>
+
+      <!-- ── ABOUT ── -->
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)" aria-expanded="true">
+          <div class="section-title">
+            <span class="section-num">01</span>
+            About Me
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="section-body open">
+          <div class="section-inner">
+            <div class="about-text">
+              <p>
+                I am a <strong>quantitative finance and data analytics professional</strong> with 7+ years of experience spanning asset-liability management, portfolio analytics, credit analysis, and Python-based data engineering across institutions including <strong>JP Morgan Chase, Barclays, and Amherst</strong>. My work sits at the intersection of rigorous quantitative research and practical financial engineering.
+              </p>
+              <p>
+                Currently a <strong>Senior ALM Analyst at Amherst</strong>, I deliver fund-level analytics across a portfolio of 49,000+ single-family rental units — covering debt structuring, liquidity planning, and capital deployment. I hold an <strong>MSc in Financial Engineering from WorldQuant University</strong>, where my capstone combined Piotroski F-Score fundamental screening with market-timing signals, published on SSRN and cited in peer-reviewed journals across multiple markets.
+              </p>
+              <p>
+                My research interests span <strong>systematic algorithmic trading</strong>, volatility regime modelling, and AI-driven financial analytics. I am a <strong>Microsoft Certified Power BI Data Analyst (PL-300)</strong> and hold certifications in machine learning for finance from EDHEC Business School.
+              </p>
+            </div>
+            <div class="stat-row">
+              <div class="stat-box">
+                <div class="stat-val">7+</div>
+                <div class="stat-label">Years Experience</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">49K+</div>
+                <div class="stat-label">Units Under Analytics</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">MSc</div>
+                <div class="stat-label">Financial Engineering</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">5+</div>
+                <div class="stat-label">SSRN Citations</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SKILLS ── -->
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)" aria-expanded="false">
+          <div class="section-title">
+            <span class="section-num">02</span>
+            Skills
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <div class="skills-grid">
+              <div class="skill-group">
+                <div class="skill-group-label">Programming & Analytics</div>
+                <div class="skill-tags">
+                  <span class="skill-tag">Python</span>
+                  <span class="skill-tag">Pandas</span>
+                  <span class="skill-tag">NumPy</span>
+                  <span class="skill-tag">Scikit-Learn</span>
+                  <span class="skill-tag">TensorFlow</span>
+                  <span class="skill-tag">SQL</span>
+                  <span class="skill-tag">R</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-group-label">BI & Visualisation</div>
+                <div class="skill-tags">
+                  <span class="skill-tag">Power BI (PL-300)</span>
+                  <span class="skill-tag">DAX</span>
+                  <span class="skill-tag">Tableau</span>
+                  <span class="skill-tag">Excel / Power Query</span>
+                  <span class="skill-tag">VBA</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-group-label">Cloud & Data Engineering</div>
+                <div class="skill-tags">
+                  <span class="skill-tag">Microsoft Fabric</span>
+                  <span class="skill-tag">Azure Synapse</span>
+                  <span class="skill-tag">Azure Data Lake</span>
+                  <span class="skill-tag">AWS S3</span>
+                  <span class="skill-tag">ETL/ELT Pipelines</span>
+                  <span class="skill-tag">BigQuery</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-group-label">Quantitative Finance</div>
+                <div class="skill-tags">
+                  <span class="skill-tag">ALM</span>
+                  <span class="skill-tag">Portfolio Optimisation</span>
+                  <span class="skill-tag">Monte Carlo</span>
+                  <span class="skill-tag">Time Series</span>
+                  <span class="skill-tag">Factor Models</span>
+                  <span class="skill-tag">Credit Analysis</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-group-label">Algo Trading</div>
+                <div class="skill-tags">
+                  <span class="skill-tag">QuantConnect</span>
+                  <span class="skill-tag">LEAN Engine</span>
+                  <span class="skill-tag">Backtesting</span>
+                  <span class="skill-tag">Volatility Regimes</span>
+                  <span class="skill-tag">Signal Research</span>
+                </div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-group-label">ML / AI</div>
+                <div class="skill-tags">
+                  <span class="skill-tag">Supervised Learning</span>
+                  <span class="skill-tag">Unsupervised Learning</span>
+                  <span class="skill-tag">LLM Integration</span>
+                  <span class="skill-tag">Prompt Engineering</span>
+                  <span class="skill-tag">Predictive Modelling</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXPERIENCE ── -->
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)" aria-expanded="false">
+          <div class="section-title">
+            <span class="section-num">03</span>
+            Work Experience
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+
+            <div class="exp-item">
+              <div class="exp-meta">
+                <div class="exp-firm">Amherst</div>
+                <div class="exp-period">Nov 2023 — Present</div>
+              </div>
+              <div>
+                <div class="exp-role">Senior Analyst, Asset & Liability Management</div>
+                <div class="exp-desc">
+                  Deliver fund-level ALM analytics across a portfolio of 49,000+ single-family rental units, supporting strategic decisions for debt structuring, liquidity planning, and capital deployment across multiple institutional funds. Developed executive ALM dashboards visualising LTV, DSCR, and portfolio-level leverage — enhancing investor transparency. Ensured compliance with U.S. GAAP, SEC reporting standards, and internal audit protocols.
+                </div>
+                <div class="exp-tags">
+                  <span class="exp-tag">ALM</span>
+                  <span class="exp-tag">Python</span>
+                  <span class="exp-tag">Power BI</span>
+                  <span class="exp-tag">LTV / DSCR</span>
+                  <span class="exp-tag">U.S. GAAP</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-meta">
+                <div class="exp-firm">Amherst</div>
+                <div class="exp-period">Jun 2021 — Nov 2023</div>
+              </div>
+              <div>
+                <div class="exp-role">Analyst, Portfolio Management</div>
+                <div class="exp-desc">
+                  Engineered automated reporting pipelines using SQL, Python, and Power BI — integrating data from Yardi Voyager, Azure MySQL, and MySQL Workbench — cutting manual reporting time by 65%. Modelled property-level and fund-level cash flows to forecast debt service coverage, refinancing needs, and reserve adequacy, directly informing capital calls and distribution schedules.
+                </div>
+                <div class="exp-tags">
+                  <span class="exp-tag">SQL</span>
+                  <span class="exp-tag">Python</span>
+                  <span class="exp-tag">Azure MySQL</span>
+                  <span class="exp-tag">Cash Flow Modelling</span>
+                  <span class="exp-tag">Automation</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-meta">
+                <div class="exp-firm">Barclays</div>
+                <div class="exp-period">Feb 2020 — Jun 2020</div>
+              </div>
+              <div>
+                <div class="exp-role">Intern — Encore Fellow</div>
+                <div class="exp-desc">
+                  Automated market data capture using Python (Selenium, web scraping), improving accuracy and reducing retrieval time by 80%. Built integrated Excel-Python dashboards that eliminated 95% of manual effort in performance tracking and optimised VBA macros reducing runtime by 50%.
+                </div>
+                <div class="exp-tags">
+                  <span class="exp-tag">Python</span>
+                  <span class="exp-tag">Selenium</span>
+                  <span class="exp-tag">Excel / VBA</span>
+                  <span class="exp-tag">Automation</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-meta">
+                <div class="exp-firm">JP Morgan</div>
+                <div class="exp-period">May 2016 — Aug 2018</div>
+              </div>
+              <div>
+                <div class="exp-role">Senior Portfolio Analyst</div>
+                <div class="exp-desc">
+                  Performed asset valuation, credit analysis, and performance tracking for $500M investment portfolios; underwrote new investments. Implemented process improvements in financial reporting, increasing efficiency by 25% through automation and standardisation.
+                </div>
+                <div class="exp-tags">
+                  <span class="exp-tag">Credit Analysis</span>
+                  <span class="exp-tag">Asset Valuation</span>
+                  <span class="exp-tag">Portfolio Analytics</span>
+                  <span class="exp-tag">Financial Reporting</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RESUME ── -->
+      <div class="section">
+        <div class="section-header" onclick="toggleSection(this)" aria-expanded="false">
+          <div class="section-title">
+            <span class="section-num">04</span>
+            Résumé
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="section-body">
+          <div class="section-inner">
+            <div class="resume-block">
+              <div class="resume-info">
+                <h3>Neelkanth Mehta — Curriculum Vitae</h3>
+                <p>PDF · Last updated February 2026</p>
+              </div>
+              <a class="btn-download" href="/resume.pdf" download>
+                ↓ &nbsp; Download Résumé
+              </a>
+            </div>
+            <div class="edu-certs-grid">
+              <div class="skill-group">
+                <div class="skill-group-label">Education</div>
+                <div style="margin-top:4px;">
+                  <div style="color:#e8dfc8; font-family:var(--font-display); font-size:16px; margin-bottom:2px;">MSc Financial Engineering</div>
+                  <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">WorldQuant University · 2019 · CGPA 84%</div>
+                  <div style="font-size:13px; color:var(--text-dim); margin-top:6px; font-style:italic;">Thesis published on SSRN · 5+ citations</div>
+                  <div style="margin-top:12px; color:#e8dfc8; font-family:var(--font-display); font-size:16px; margin-bottom:2px;">BMS, Marketing</div>
+                  <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">University of Mumbai · 2007</div>
+                </div>
+              </div>
+              <div class="skill-group">
+                <div class="skill-group-label">Certifications</div>
+                <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+                  <div>
+                    <div style="color:#e8dfc8; font-size:13px; font-weight:500;">Microsoft PL-300 — Power BI Analyst</div>
+                    <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);">Valid through October 2026</div>
+                  </div>
+                  <div>
+                    <div style="color:#e8dfc8; font-size:13px; font-weight:500;">Investment Management with Python & ML</div>
+                    <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);">EDHEC Business School · Coursera</div>
+                  </div>
+                  <div>
+                    <div style="color:#e8dfc8; font-size:13px; font-weight:500;">Data Visualisation with Tableau</div>
+                    <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);">UC Davis · Coursera</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ════════════════════════════════
+       TAB: PROJECTS
+  ════════════════════════════════ -->
+  <div id="tab-projects" class="tab-panel">
+    <main>
+      <div class="projects-header">
+        <h2>Research &amp; Projects</h2>
+        <p>Quantitative strategies · Financial engineering · AI applications</p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- PROJECT 1 -->
+        <div class="project-card">
+          <div class="project-type">MSc Capstone · SSRN Published</div>
+          <div class="project-title">Piotroski F-Score + Market Timing Strategy</div>
+          <div class="project-subtitle">WorldQuant University · Python · Equity Long/Short</div>
+          <div class="project-desc">
+            A systematic equity strategy combining Piotroski F-Score fundamental screening with quantitative market-timing signals. The framework filters for financially improving companies, then gates entries using macro regime indicators to reduce drawdown during adverse market conditions.
+          </div>
+          <div class="project-finding">
+            <div class="project-finding-label">Key Result</div>
+            <p>Achieved strong out-of-sample risk-adjusted returns against benchmark across multiple backtest windows, with the timing overlay meaningfully reducing maximum drawdown.</p>
+          </div>
+          <div class="project-footer">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Fundamental Screening</span>
+              <span class="project-tag">Market Timing</span>
+              <span class="project-tag">Backtesting</span>
+              <span class="project-tag">Factor Models</span>
+            </div>
+            <a class="project-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3451859" target="_blank">SSRN Paper →</a>
+          </div>
+        </div>
+
+        <!-- PROJECT 2 -->
+        <div class="project-card">
+          <div class="project-type">Algorithmic Trading · Live-Ready</div>
+          <div class="project-title">Multi-Regime Momentum Strategy</div>
+          <div class="project-subtitle">QuantConnect LEAN · SPY &amp; NIFTY 50 · Hourly Resolution</div>
+          <div class="project-desc">
+            A systematic momentum strategy with dual-signal volatility regime classification (VIX + realised vol), ATR-based trailing stops, triple-gated re-entry conditions, and inverse-volatility position sizing. NIFTY 50 exposure implemented via NIFTYBEES on NSE through Zerodha/TrueData integration.
+          </div>
+          <div class="project-finding">
+            <div class="project-finding-label">Key Design Choices</div>
+            <p>Regime-aware sizing that scales exposure inversely to volatility, reducing drawdowns during high-VIX environments while preserving upside participation during trending regimes.</p>
+          </div>
+          <div class="project-footer">
+            <div class="project-tags">
+              <span class="project-tag">QuantConnect</span>
+              <span class="project-tag">LEAN Engine</span>
+              <span class="project-tag">Volatility Regimes</span>
+              <span class="project-tag">ATR Stops</span>
+              <span class="project-tag">Position Sizing</span>
+            </div>
+            <a class="project-link" href="https://github.com/NeelkanthMehta/A-Value-Investment-Strategy-That-Combines-Security-Selection-And-Market-Timing-Signals" target="_blank">GitHub →</a>
+          </div>
+        </div>
+
+        <!-- PROJECT 3 -->
+        <div class="project-card">
+          <div class="project-type">Banking Research · Regulatory Capital</div>
+          <div class="project-title">Indian Banking Sector — Risk &amp; Capital Adequacy</div>
+          <div class="project-subtitle">SBI · HDFC Bank · Bank of Baroda · Basel III/IV Framework</div>
+          <div class="project-desc">
+            An eight-dimension comparative analysis of India's major banks covering CET1 adequacy, D-SIB surcharge impact, Pillar 2 MVE sensitivity, IRRBB framework compliance, and trapped capital dynamics. Produced as a structured analytical report with master metrics, rankings, and policy implications.
+          </div>
+          <div class="project-finding">
+            <div class="project-finding-label">Key Finding</div>
+            <p>Identified SBI's ~49bps CET1 deficit against its post-surcharge effective minimum and HDFC's outsized Pillar 2 MVE sensitivity relative to its Pillar 1 market risk capital — both with direct capital planning implications.</p>
+          </div>
+          <div class="project-footer">
+            <div class="project-tags">
+              <span class="project-tag">Basel III/IV</span>
+              <span class="project-tag">D-SIB Surcharge</span>
+              <span class="project-tag">IRRBB</span>
+              <span class="project-tag">CET1</span>
+              <span class="project-tag">Regulatory Capital</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-copy">© 2026 Neelkanth Mehta · Mumbai · All rights reserved. All original content, project descriptions, and research on this site are the intellectual property of Neelkanth Mehta and may not be reproduced without written permission.</div>
+    <div class="footer-links">
+      <a class="footer-link" href="https://linkedin.com/in/neelkanth-mehta" target="_blank">LinkedIn</a>
+      <a class="footer-link" href="https://github.com/NeelkanthMehta" target="_blank">GitHub</a>
+      <a class="footer-link" href="https://outlook.live.com/mail/0/deeplink/compose?to=neilstrong2003@yahoo.com" target="_blank">Email</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── TAB SWITCHING ──
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── COLLAPSIBLE SECTIONS ──
+    function toggleSection(header) {
+      const body = header.nextElementSibling;
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      header.setAttribute('aria-expanded', String(!isOpen));
+    }
+  </script>
+
+</body>
+</html>
