@@ -1405,10 +1405,6 @@
     }
   </script>
 
-  <!-- Calendly Widget Script -->
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-
   <!-- ════════════════════════════════
        CHATBOT STYLES
   ════════════════════════════════ -->
@@ -1775,8 +1771,7 @@
     let isStreaming = false;
 
     function openCalendly() {
-      Calendly.initPopupWidget({ url: 'https://calendly.com/neilstrong2003' });
-      return false;
+      window.open('https://calendly.com/neilstrong2003', '_blank');
     }
 
     function toggleChat() {
