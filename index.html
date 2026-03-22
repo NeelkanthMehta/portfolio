@@ -1405,6 +1405,10 @@
     }
   </script>
 
+  <!-- Calendly Widget Script -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
   <!-- ════════════════════════════════
        CHATBOT STYLES
   ════════════════════════════════ -->
@@ -1670,6 +1674,26 @@
         bottom: 20px;
       }
     }
+
+    .chat-book-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--gold);
+      border: none;
+      padding: 7px 13px;
+      border-radius: 2px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity 0.2s;
+    }
+
+    .chat-book-btn:hover { opacity: 0.85; }
   </style>
 
   <!-- ════════════════════════════════
@@ -1700,6 +1724,13 @@
       </button>
     </div>
 
+    <!-- Book a Call Bar -->
+    <div style="padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--gold-faint);">
+      <button class="chat-book-btn" onclick="openCalendly()" style="width:100%; justify-content:center; margin-top:0; font-size:11px; padding:9px 14px;">
+        📅 &nbsp; Book a Call with Neelkanth
+      </button>
+    </div>
+
     <div class="chat-messages" id="chatMessages">
       <div class="chat-bubble bot">
         Hello! I'm Neelkanth's professional concierge. I'm here to answer any questions you may have about his background, skills, projects, or availability. How can I help you today?
@@ -1710,7 +1741,7 @@
       <button class="chat-suggestion" onclick="sendSuggestion(this)">What roles is he open to?</button>
       <button class="chat-suggestion" onclick="sendSuggestion(this)">Tell me about his research</button>
       <button class="chat-suggestion" onclick="sendSuggestion(this)">What are his key skills?</button>
-      <button class="chat-suggestion" onclick="sendSuggestion(this)">How can I contact him?</button>
+      <button class="chat-suggestion" onclick="sendSuggestion(this)">Schedule a call</button>
     </div>
 
     <div class="chat-input-row">
@@ -1742,6 +1773,11 @@
 
     let conversationHistory = [];
     let isStreaming = false;
+
+    function openCalendly() {
+      Calendly.initPopupWidget({ url: 'https://calendly.com/neilstrong2003' });
+      return false;
+    }
 
     function toggleChat() {
       chatWindow.classList.toggle('open');
@@ -1792,6 +1828,17 @@
     async function sendMessage() {
       const text = chatInput.value.trim();
       if (!text || isStreaming) return;
+
+      // Auto-trigger Calendly if user wants to schedule
+      const scheduleKeywords = ['schedule', 'book', 'calendly', 'meeting', 'call', 'appointment', 'chat with', 'speak with', 'talk to'];
+      if (scheduleKeywords.some(k => text.toLowerCase().includes(k))) {
+        chatSuggestions.style.display = 'none';
+        chatInput.value = '';
+        addBubble('user', text);
+        addBubble('bot', "I'd be happy to help you schedule a call with Neelkanth! I'm opening his calendar now — please pick a time that works best for you.");
+        setTimeout(() => openCalendly(), 600);
+        return;
+      }
 
       chatSuggestions.style.display = 'none';
       chatInput.value = '';
