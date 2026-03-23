@@ -669,7 +669,51 @@
 
     .footer-link:hover { color: var(--gold); }
 
-    /* ─── ANIMATIONS ─── */
+    /* ─── RESEARCH TOOL ─── */
+    .reg-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .reg-btn:hover  { border-color: var(--gold-dim); color: var(--gold); }
+    .reg-btn.active { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-faint); }
+
+    .sample-q {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      background: transparent;
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .sample-q:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-faint); }
+
+    .citation-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--gold-dim);
+      border-radius: 2px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .citation-title { font-size: 12px; color: #e8dfc8; font-weight: 500; }
+    .citation-meta  { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; }
+    .citation-link  { font-family: var(--font-mono); font-size: 10px; color: var(--blue); text-decoration: none; }
+    .citation-link:hover { opacity: 0.7; }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -1301,7 +1345,89 @@
 
       <div class="projects-grid">
 
-        <!-- PROJECT 1 -->
+        <!-- PROJECT 1 — REGULATORY INTELLIGENCE TOOL -->
+        <div class="project-card" style="border-color: var(--gold-dim);">
+          <div class="project-type" style="color:var(--green);">● Live Project · AI + Regulatory Research</div>
+          <div class="project-title">Indian Regulatory Intelligence Tool</div>
+          <div class="project-subtitle">SEBI · RBI · RAG Architecture · Groq Llama 3.3 · Supabase</div>
+          <div class="project-desc">
+            An AI-powered research tool that indexes SEBI and RBI circulars in real time, then answers natural language queries backed by actual regulatory documents. Built on a Retrieval-Augmented Generation (RAG) architecture — keyword search surfaces relevant circulars, which are passed as context to Llama 3.3 to generate precise, cited answers.
+          </div>
+          <div class="project-finding">
+            <div class="project-finding-label">Try It Below</div>
+            <p>Ask any question about Indian financial regulation — capital adequacy, KYC norms, derivative guidelines, monetary policy — and get a sourced answer in seconds.</p>
+          </div>
+
+          <!-- ── RESEARCH TOOL UI ── -->
+          <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:20px;">
+
+            <!-- Regulator selector -->
+            <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
+              <button class="reg-btn active" onclick="setRegulator('both', this)">SEBI + RBI</button>
+              <button class="reg-btn" onclick="setRegulator('sebi', this)">SEBI only</button>
+              <button class="reg-btn" onclick="setRegulator('rbi', this)">RBI only</button>
+            </div>
+
+            <!-- Question input -->
+            <div style="display:flex; gap:8px; margin-bottom:16px;">
+              <input
+                type="text"
+                id="researchInput"
+                placeholder="e.g. What are RBI's latest capital adequacy requirements?"
+                style="flex:1; background:var(--bg3); border:1px solid var(--border);
+                       color:var(--text); font-family:var(--font-body); font-size:13px;
+                       padding:9px 13px; border-radius:2px; outline:none;"
+                onkeydown="if(event.key==='Enter') runResearch()"
+              />
+              <button onclick="runResearch()" id="researchBtn"
+                style="background:var(--gold); border:none; border-radius:2px;
+                       padding:9px 18px; font-family:var(--font-mono); font-size:11px;
+                       letter-spacing:0.10em; text-transform:uppercase; color:var(--bg);
+                       cursor:pointer; white-space:nowrap; transition:opacity 0.2s;">
+                Ask →
+              </button>
+            </div>
+
+            <!-- Answer panel -->
+            <div id="researchAnswer" style="display:none;">
+              <div id="researchText"
+                style="background:var(--bg3); border:1px solid var(--border);
+                       border-radius:2px; padding:16px; font-size:13px;
+                       color:var(--text); line-height:1.75; white-space:pre-wrap;
+                       margin-bottom:12px; min-height:60px;">
+              </div>
+              <div id="researchCitations" style="display:flex; flex-direction:column; gap:6px;"></div>
+            </div>
+
+            <!-- Loading state -->
+            <div id="researchLoading" style="display:none; padding:12px 0;">
+              <span style="font-family:var(--font-mono); font-size:11px; color:var(--gold);
+                           letter-spacing:0.10em;">Searching database...</span>
+            </div>
+
+            <!-- Sample questions -->
+            <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px;" id="sampleQuestions">
+              <button class="sample-q" onclick="askSample(this)">Latest RBI capital adequacy norms</button>
+              <button class="sample-q" onclick="askSample(this)">SEBI mutual fund regulations 2026</button>
+              <button class="sample-q" onclick="askSample(this)">RBI monetary policy changes</button>
+              <button class="sample-q" onclick="askSample(this)">SEBI KYC requirements</button>
+            </div>
+          </div>
+
+          <div class="project-footer" style="margin-top:20px;">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">RAG</span>
+              <span class="project-tag">Supabase</span>
+              <span class="project-tag">Groq API</span>
+              <span class="project-tag">Llama 3.3</span>
+              <span class="project-tag">Vercel Edge</span>
+            </div>
+            <a class="project-link" href="https://github.com/NeelkanthMehta" target="_blank">GitHub →</a>
+          </div>
+        </div>
+
+        <!-- PROJECT 2 — PIOTROSKI -->
         <div class="project-card">
           <div class="project-type">MSc Capstone · SSRN Published</div>
           <div class="project-title">Piotroski F-Score + Market Timing Strategy</div>
@@ -1325,53 +1451,6 @@
           </div>
         </div>
 
-        <!-- PROJECT 2 -->
-        <div class="project-card">
-          <div class="project-type">Algorithmic Trading · Live-Ready</div>
-          <div class="project-title">Multi-Regime Momentum Strategy</div>
-          <div class="project-subtitle">QuantConnect LEAN · SPY &amp; NIFTY 50 · Hourly Resolution</div>
-          <div class="project-desc">
-            A systematic momentum strategy with dual-signal volatility regime classification (VIX + realised vol), ATR-based trailing stops, triple-gated re-entry conditions, and inverse-volatility position sizing. NIFTY 50 exposure implemented via NIFTYBEES on NSE through Zerodha/TrueData integration.
-          </div>
-          <div class="project-finding">
-            <div class="project-finding-label">Key Design Choices</div>
-            <p>Regime-aware sizing that scales exposure inversely to volatility, reducing drawdowns during high-VIX environments while preserving upside participation during trending regimes.</p>
-          </div>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="project-tag">QuantConnect</span>
-              <span class="project-tag">LEAN Engine</span>
-              <span class="project-tag">Volatility Regimes</span>
-              <span class="project-tag">ATR Stops</span>
-              <span class="project-tag">Position Sizing</span>
-            </div>
-            <a class="project-link" href="https://github.com/NeelkanthMehta/A-Value-Investment-Strategy-That-Combines-Security-Selection-And-Market-Timing-Signals" target="_blank">GitHub →</a>
-          </div>
-        </div>
-
-        <!-- PROJECT 3 -->
-        <div class="project-card">
-          <div class="project-type">Banking Research · Regulatory Capital</div>
-          <div class="project-title">Indian Banking Sector — Risk &amp; Capital Adequacy</div>
-          <div class="project-subtitle">SBI · HDFC Bank · Bank of Baroda · Basel III/IV Framework</div>
-          <div class="project-desc">
-            An eight-dimension comparative analysis of India's major banks covering CET1 adequacy, D-SIB surcharge impact, Pillar 2 MVE sensitivity, IRRBB framework compliance, and trapped capital dynamics. Produced as a structured analytical report with master metrics, rankings, and policy implications.
-          </div>
-          <div class="project-finding">
-            <div class="project-finding-label">Key Finding</div>
-            <p>Identified SBI's ~49bps CET1 deficit against its post-surcharge effective minimum and HDFC's outsized Pillar 2 MVE sensitivity relative to its Pillar 1 market risk capital — both with direct capital planning implications.</p>
-          </div>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="project-tag">Basel III/IV</span>
-              <span class="project-tag">D-SIB Surcharge</span>
-              <span class="project-tag">IRRBB</span>
-              <span class="project-tag">CET1</span>
-              <span class="project-tag">Regulatory Capital</span>
-            </div>
-          </div>
-        </div>
-
       </div>
     </main>
   </div>
@@ -1387,7 +1466,115 @@
   </footer>
 
   <script>
-    // ── TAB SWITCHING ──
+    // ── RESEARCH TOOL ──
+    let selectedRegulator = 'both';
+
+    function setRegulator(val, btn) {
+      selectedRegulator = val;
+      document.querySelectorAll('.reg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function askSample(btn) {
+      document.getElementById('researchInput').value = btn.textContent;
+      document.getElementById('sampleQuestions').style.display = 'none';
+      runResearch();
+    }
+
+    async function runResearch() {
+      const question = document.getElementById('researchInput').value.trim();
+      if (!question) return;
+
+      const answerDiv  = document.getElementById('researchAnswer');
+      const textDiv    = document.getElementById('researchText');
+      const citDiv     = document.getElementById('researchCitations');
+      const loadingDiv = document.getElementById('researchLoading');
+      const btn        = document.getElementById('researchBtn');
+
+      // Reset UI
+      answerDiv.style.display  = 'none';
+      loadingDiv.style.display = 'block';
+      textDiv.textContent      = '';
+      citDiv.innerHTML         = '';
+      btn.disabled             = true;
+      btn.textContent          = '...';
+      document.getElementById('sampleQuestions').style.display = 'none';
+
+      try {
+        const res = await fetch('/api/research', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, regulator: selectedRegulator })
+        });
+
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+        loadingDiv.style.display = 'none';
+        answerDiv.style.display  = 'block';
+
+        const reader  = res.body.getReader();
+        const decoder = new TextDecoder();
+        let   buffer  = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const data = line.replace('data: ', '').trim();
+            if (data === '[DONE]') break;
+
+            try {
+              const parsed = JSON.parse(data);
+
+              // First chunk — citations metadata
+              if (parsed.citations) {
+                renderCitations(parsed.citations, citDiv);
+                continue;
+              }
+
+              // Streaming token
+              const token = parsed.choices?.[0]?.delta?.content || '';
+              textDiv.textContent += token;
+
+            } catch {}
+          }
+        }
+
+      } catch (err) {
+        loadingDiv.style.display = 'none';
+        answerDiv.style.display  = 'block';
+        textDiv.textContent = 'Something went wrong. Please try again.';
+        console.error(err);
+      }
+
+      btn.disabled    = false;
+      btn.textContent = 'Ask →';
+    }
+
+    function renderCitations(citations, container) {
+      if (!citations || !citations.length) return;
+      const label = document.createElement('div');
+      label.style.cssText = 'font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;';
+      label.textContent = `Sources (${citations.length})`;
+      container.appendChild(label);
+
+      citations.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'citation-card';
+        card.innerHTML = `
+          <div class="citation-title">${c.title}</div>
+          <div class="citation-meta">${c.regulator} · ${c.ref || 'No ref'} · ${c.date || 'No date'} · ${c.category || ''}</div>
+          ${c.url ? `<a class="citation-link" href="${c.url}" target="_blank">View circular →</a>` : ''}
+        `;
+        container.appendChild(card);
+      });
+    }
     function switchTab(name, btn) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
