@@ -1386,6 +1386,14 @@
                        cursor:pointer; white-space:nowrap; transition:opacity 0.2s;">
                 Ask →
               </button>
+              <button onclick="resetResearch()" id="researchReset"
+                style="background:transparent; border:1px solid var(--border); border-radius:2px;
+                       padding:9px 14px; font-family:var(--font-mono); font-size:11px;
+                       letter-spacing:0.10em; text-transform:uppercase; color:var(--text-muted);
+                       cursor:pointer; white-space:nowrap; transition:all 0.2s; display:none;"
+                title="Reset">
+                ↺
+              </button>
             </div>
 
             <!-- Answer panel -->
@@ -1466,6 +1474,29 @@
   </footer>
 
   <script>
+    function resetResearch() {
+      // Clear input
+      document.getElementById('researchInput').value = '';
+      // Hide answer and loading
+      document.getElementById('researchAnswer').style.display  = 'none';
+      document.getElementById('researchLoading').style.display = 'none';
+      // Clear content
+      document.getElementById('researchText').textContent = '';
+      document.getElementById('researchCitations').innerHTML = '';
+      // Restore sample questions
+      document.getElementById('sampleQuestions').style.display = 'flex';
+      // Hide reset button
+      document.getElementById('researchReset').style.display = 'none';
+      // Reset regulator to default
+      selectedRegulator = 'both';
+      document.querySelectorAll('.reg-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.reg-btn').classList.add('active');
+      // Re-enable ask button
+      const btn = document.getElementById('researchBtn');
+      btn.disabled    = false;
+      btn.textContent = 'Ask →';
+    }
+
     // ── RESEARCH TOOL ──
     let selectedRegulator = 'both';
 
@@ -1499,6 +1530,7 @@
       btn.disabled             = true;
       btn.textContent          = '...';
       document.getElementById('sampleQuestions').style.display = 'none';
+      document.getElementById('researchReset').style.display   = 'inline-block';
 
       try {
         const res = await fetch('/api/research', {
