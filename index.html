@@ -516,7 +516,7 @@
       background: var(--bg2);
       border: 1px solid var(--border);
       border-radius: 2px;
-      padding: 28px 28px 24px;
+      padding: 0;
       transition: border-color 0.2s, background 0.2s;
       animation: fadeUp 0.6s ease both;
       position: relative;
@@ -532,18 +532,46 @@
       background: var(--gold);
       opacity: 0;
       transition: opacity 0.2s;
+      z-index: 1;
     }
 
-    .project-card:hover {
-      border-color: var(--gold-dim);
-      background: var(--bg3);
-    }
-
+    .project-card:hover { border-color: var(--gold-dim); }
     .project-card:hover::before { opacity: 1; }
 
     .project-card:nth-child(1) { animation-delay: 0.05s; }
     .project-card:nth-child(2) { animation-delay: 0.10s; }
     .project-card:nth-child(3) { animation-delay: 0.15s; }
+
+    /* Collapsible header */
+    .project-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+    }
+    .project-header:hover { background: var(--bg3); }
+
+    .project-header-left { flex: 1; min-width: 0; }
+
+    .project-chevron {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+    }
+    .project-card.open .project-chevron { transform: rotate(180deg); }
+
+    /* Collapsible body */
+    .project-body {
+      display: none;
+      padding: 0 28px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .project-card.open .project-body { display: block; }
+    .project-card.open { background: var(--bg3); border-color: var(--gold-dim); }
 
     .project-type {
       font-family: var(--font-mono);
@@ -1337,111 +1365,106 @@
     <main>
       <div class="projects-header">
         <h2>Research &amp; Projects</h2>
-        <p>Quantitative strategies · Financial engineering · AI applications</p>
+        <p>Quantitative strategies · Financial engineering · AI applications · Click any project to expand</p>
       </div>
 
+      <!-- ── AI & DATA ENGINEERING ── -->
       <div class="projects-grid">
 
         <!-- PROJECT 1 — REGULATORY INTELLIGENCE TOOL -->
-        <div class="project-card" style="border-color: var(--gold-dim);">
-          <div class="project-type" style="color:var(--green);">● RAG Pipeline · SEBI & RBI Circular Tracker & Q&A Engine</div>
-          <div class="project-title">Indian Regulatory Intelligence Tool</div>
-          <div class="project-subtitle">SEBI · RBI · RAG Architecture · Groq Llama 3.3 · Supabase</div>
-          <div class="project-desc">
-            An AI-powered research tool that indexes SEBI and RBI circulars in real time, then answers natural language queries backed by actual regulatory documents. Built on a Retrieval-Augmented Generation (RAG) architecture — keyword search surfaces relevant circulars, which are passed as context to Llama 3.3 to generate precise, cited answers.
+        <div class="project-card" id="card-reg" style="border-color:var(--gold-dim);">
+          <div class="project-header" onclick="toggleProject('card-reg')">
+            <div class="project-header-left">
+              <div class="project-type" style="color:var(--green);">● Live · RAG Pipeline · AI + Data Engineering</div>
+              <div class="project-title">Indian Regulatory Intelligence Tool</div>
+              <div class="project-subtitle">SEBI & RBI real-time circular tracking · Groq Llama 3.3 · Supabase · Vercel Edge</div>
+            </div>
+            <svg class="project-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
           </div>
-          <div class="project-finding">
-            <div class="project-finding-label">Try It Below</div>
-            <p>Ask any question about Indian financial regulation — capital adequacy, KYC norms, derivative guidelines, monetary policy — and get a sourced answer in seconds.</p>
-          </div>
-
-          <!-- ── RESEARCH TOOL UI ── -->
-          <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:20px;">
-            <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
-              <button class="reg-btn active" onclick="setRegulator('both', this)">SEBI + RBI</button>
-              <button class="reg-btn" onclick="setRegulator('sebi', this)">SEBI only</button>
-              <button class="reg-btn" onclick="setRegulator('rbi', this)">RBI only</button>
+          <div class="project-body">
+            <div style="padding-top:20px;">
+              <div class="project-desc">
+                An AI-powered research tool that indexes SEBI and RBI circulars in real time and answers natural language regulatory queries backed by actual source documents. Built on a Retrieval-Augmented Generation (RAG) architecture — keyword search surfaces relevant circulars from a Supabase vector store, which are passed as context to Llama 3.3 to generate precise, cited answers. A GitHub Actions cron job scrapes and summarises new circulars daily.
+              </div>
+              <div class="project-finding">
+                <div class="project-finding-label">Try It Below</div>
+                <p>Ask any question about Indian financial regulation — capital adequacy, KYC, derivatives, monetary policy — and get a sourced answer in seconds.</p>
+              </div>
+              <!-- RAG Tool UI -->
+              <div style="margin-top:16px; border-top:1px solid var(--border); padding-top:18px;">
+                <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
+                  <button class="reg-btn active" onclick="setRegulator('both', this)">SEBI + RBI</button>
+                  <button class="reg-btn" onclick="setRegulator('sebi', this)">SEBI only</button>
+                  <button class="reg-btn" onclick="setRegulator('rbi', this)">RBI only</button>
+                </div>
+                <div style="display:flex; gap:8px; margin-bottom:16px;">
+                  <input type="text" id="researchInput"
+                    placeholder="e.g. What are RBI's latest capital adequacy requirements?"
+                    style="flex:1; background:var(--bg2); border:1px solid var(--border);
+                           color:var(--text); font-family:var(--font-body); font-size:13px;
+                           padding:9px 13px; border-radius:2px; outline:none;"
+                    onkeydown="if(event.key==='Enter') runResearch()" />
+                  <button onclick="runResearch()" id="researchBtn"
+                    style="background:var(--gold); border:none; border-radius:2px;
+                           padding:9px 18px; font-family:var(--font-mono); font-size:11px;
+                           letter-spacing:0.10em; text-transform:uppercase; color:var(--bg);
+                           cursor:pointer; white-space:nowrap;">Ask →</button>
+                  <button onclick="resetResearch()" id="researchReset"
+                    style="display:none; background:transparent; border:1px solid var(--border);
+                           border-radius:2px; padding:9px 14px; font-family:var(--font-mono);
+                           font-size:11px; color:var(--text-muted); cursor:pointer;"
+                    title="Reset">↺</button>
+                </div>
+                <div id="researchAnswer" style="display:none;">
+                  <div id="researchText"
+                    style="background:var(--bg2); border:1px solid var(--border); border-radius:2px;
+                           padding:16px; font-size:13px; color:var(--text); line-height:1.75;
+                           white-space:pre-wrap; margin-bottom:12px; min-height:60px;"></div>
+                  <div id="researchCitations" style="display:flex; flex-direction:column; gap:6px;"></div>
+                </div>
+                <div id="researchLoading" style="display:none; padding:10px 0;">
+                  <span style="font-family:var(--font-mono); font-size:11px; color:var(--gold); letter-spacing:0.10em;">Searching database...</span>
+                </div>
+                <div style="margin-top:12px; padding:9px 13px; border:1px solid var(--border); border-radius:2px; background:var(--bg2);">
+                  <p style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted); letter-spacing:0.06em; line-height:1.7; margin:0; font-style:italic;">
+                    ⚠ AI-generated from curated circular database. Informational only — verify with SEBI (sebi.gov.in) or RBI (rbi.org.in) for compliance decisions.
+                  </p>
+                </div>
+                <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:6px;" id="sampleQuestions">
+                  <button class="sample-q" onclick="askSample(this)">Latest RBI capital adequacy norms</button>
+                  <button class="sample-q" onclick="askSample(this)">SEBI mutual fund regulations 2026</button>
+                  <button class="sample-q" onclick="askSample(this)">RBI monetary policy changes</button>
+                  <button class="sample-q" onclick="askSample(this)">SEBI KYC requirements</button>
+                </div>
+              </div>
+              <div class="project-footer" style="margin-top:20px;">
+                <div class="project-tags">
+                  <span class="project-tag">Python</span>
+                  <span class="project-tag">RAG</span>
+                  <span class="project-tag">Supabase</span>
+                  <span class="project-tag">Groq / Llama 3.3</span>
+                  <span class="project-tag">Vercel Edge</span>
+                  <span class="project-tag">GitHub Actions</span>
+                </div>
+                <a class="project-link" href="https://github.com/NeelkanthMehta" target="_blank">GitHub →</a>
+              </div>
             </div>
-            <div style="display:flex; gap:8px; margin-bottom:16px;">
-              <input type="text" id="researchInput"
-                placeholder="e.g. What are RBI's latest capital adequacy requirements?"
-                style="flex:1; background:var(--bg3); border:1px solid var(--border);
-                       color:var(--text); font-family:var(--font-body); font-size:13px;
-                       padding:9px 13px; border-radius:2px; outline:none;"
-                onkeydown="if(event.key==='Enter') runResearch()" />
-              <button onclick="runResearch()" id="researchBtn"
-                style="background:var(--gold); border:none; border-radius:2px;
-                       padding:9px 18px; font-family:var(--font-mono); font-size:11px;
-                       letter-spacing:0.10em; text-transform:uppercase; color:var(--bg);
-                       cursor:pointer; white-space:nowrap; transition:opacity 0.2s;">
-                Ask →
-              </button>
-              <button onclick="resetResearch()" id="researchReset"
-                style="background:transparent; border:1px solid var(--border); border-radius:2px;
-                       padding:9px 14px; font-family:var(--font-mono); font-size:11px;
-                       letter-spacing:0.10em; text-transform:uppercase; color:var(--text-muted);
-                       cursor:pointer; white-space:nowrap; transition:all 0.2s; display:none;"
-                title="Reset">↺</button>
-            </div>
-            <div id="researchAnswer" style="display:none;">
-              <div id="researchText"
-                style="background:var(--bg3); border:1px solid var(--border);
-                       border-radius:2px; padding:16px; font-size:13px;
-                       color:var(--text); line-height:1.75; white-space:pre-wrap;
-                       margin-bottom:12px; min-height:60px;"></div>
-              <div id="researchCitations" style="display:flex; flex-direction:column; gap:6px;"></div>
-            </div>
-            <div id="researchLoading" style="display:none; padding:12px 0;">
-              <span style="font-family:var(--font-mono); font-size:11px; color:var(--gold);
-                           letter-spacing:0.10em;">Searching database...</span>
-            </div>
-            <div style="margin-top:14px; padding:10px 14px; border:1px solid var(--border);
-                        border-radius:2px; background:var(--bg3);">
-              <p style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted);
-                         letter-spacing:0.06em; line-height:1.7; margin:0; font-style:italic;">
-                ⚠ Answers are AI-generated from a curated regulatory circular database and are for
-                informational purposes only. Always verify compliance requirements directly with
-                SEBI (sebi.gov.in) or RBI (rbi.org.in) before making any regulatory or legal decisions.
-                This tool does not constitute legal, financial, or regulatory advice.
-              </p>
-            </div>
-            <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px;" id="sampleQuestions">
-              <button class="sample-q" onclick="askSample(this)">Latest RBI capital adequacy norms</button>
-              <button class="sample-q" onclick="askSample(this)">SEBI mutual fund regulations 2026</button>
-              <button class="sample-q" onclick="askSample(this)">RBI monetary policy changes</button>
-              <button class="sample-q" onclick="askSample(this)">SEBI KYC requirements</button>
-            </div>
-          </div>
-
-          <div class="project-footer" style="margin-top:20px;">
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">RAG</span>
-              <span class="project-tag">Supabase</span>
-              <span class="project-tag">Groq API</span>
-              <span class="project-tag">Llama 3.3</span>
-              <span class="project-tag">Vercel Edge</span>
-            </div>
-            <a class="project-link" href="https://github.com/NeelkanthMehta" target="_blank">GitHub →</a>
           </div>
         </div>
 
       </div>
 
-      <!-- ════════════════════════════════
-           QUANT ALGORITHMS SUBSECTION
-      ════════════════════════════════ -->
-      <div style="margin-top:56px;">
-
-        <div style="margin-bottom:28px;">
+      <!-- ── QUANT ALGORITHMS SUBSECTION ── -->
+      <div style="margin-top:52px;">
+        <div style="margin-bottom:24px;">
           <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.18em;
                       text-transform:uppercase; color:var(--gold-dim); margin-bottom:8px;">
             Quantitative Algorithms
           </div>
           <h3 style="font-family:var(--font-display); font-size:20px; color:var(--text);
-                     font-weight:400; margin:0 0 6px 0;">
-            Systematic Equity Research
-          </h3>
+                     font-weight:400; margin:0 0 4px 0;">Systematic Equity Research</h3>
           <p style="font-size:13px; color:var(--text-muted); margin:0;">
             Factor-based strategies · QuantConnect LEAN · Academic grounding
           </p>
@@ -1449,62 +1472,87 @@
 
         <div class="projects-grid">
 
-          <!-- ALGO 1 — PIOTROSKI MSc CAPSTONE -->
-          <div class="project-card">
-            <div class="project-type">MSc Capstone · SSRN Published · WorldQuant University</div>
-            <div class="project-title">Piotroski F-Score + Market Timing</div>
-            <div class="project-subtitle">Python · US Equities · Fundamental Screening · 1976–1996 Methodology</div>
-            <div class="project-desc">
-              The MSc capstone strategy applies Piotroski's (2000) 9-signal F-Score to a universe of high book-to-market US equities, gating entries with a quantitative market-timing overlay. The F-Score evaluates each stock across three pillars — profitability (ROA, CFO, accruals quality), financial strength (leverage, liquidity, dilution), and operating efficiency (gross margin, asset turnover) — assigning one binary point per signal for a total of 0–9. Stocks scoring 8–9 are held long; stocks scoring 0–1 are shorted. The timing overlay exits to cash when the broad market trends below its 200-day moving average, reducing drawdown during bear regimes. Published on SSRN and cited in peer-reviewed replications across multiple markets.
-            </div>
-            <div class="project-finding">
-              <div class="project-finding-label">Key Result</div>
-              <p>Strong out-of-sample risk-adjusted returns against benchmark. The timing overlay meaningfully reduced maximum drawdown while preserving upside participation during trending regimes.</p>
-            </div>
-            <div class="project-footer">
-              <div class="project-tags">
-                <span class="project-tag">Piotroski F-Score</span>
-                <span class="project-tag">Book-to-Market</span>
-                <span class="project-tag">Market Timing</span>
-                <span class="project-tag">Long/Short</span>
-                <span class="project-tag">Python</span>
+          <!-- ALGO 1 — PIOTROSKI -->
+          <div class="project-card" id="card-piotroski">
+            <div class="project-header" onclick="toggleProject('card-piotroski')">
+              <div class="project-header-left">
+                <div class="project-type">MSc Capstone · SSRN Published · WorldQuant University</div>
+                <div class="project-title">Piotroski F-Score + Market Timing</div>
+                <div class="project-subtitle">9-signal fundamental score · High B/M value universe · Long/Short · 1976–1996 methodology</div>
               </div>
-              <a class="project-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3451859" target="_blank">SSRN Paper →</a>
+              <svg class="project-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+            <div class="project-body">
+              <div style="padding-top:20px;">
+                <div class="project-desc">
+                  The MSc capstone applies Piotroski's (2000) 9-signal F-Score to a universe of high book-to-market US equities. The F-Score evaluates each stock across three pillars: <strong>Profitability</strong> (ROA positivity, CFO positivity, ROA improvement, accruals quality), <strong>Financial Strength</strong> (leverage reduction, liquidity improvement, no dilution), and <strong>Operating Efficiency</strong> (gross margin expansion, asset turnover improvement). Each signal contributes one binary point for a total score of 0–9. Stocks scoring 8–9 are held long; stocks scoring 0–1 are shorted. A market-timing overlay exits the portfolio when the broad market trends below its 200-day moving average, reducing exposure during bear regimes. Published on SSRN and independently replicated across US, Brazilian, Japanese, and European equity markets.
+                </div>
+                <div class="project-finding">
+                  <div class="project-finding-label">Key Result</div>
+                  <p>Strong out-of-sample risk-adjusted returns vs benchmark. Market timing overlay meaningfully reduced max drawdown while preserving upside participation during trending regimes.</p>
+                </div>
+                <div class="project-footer">
+                  <div class="project-tags">
+                    <span class="project-tag">Piotroski F-Score</span>
+                    <span class="project-tag">Book-to-Market</span>
+                    <span class="project-tag">Market Timing</span>
+                    <span class="project-tag">Long/Short</span>
+                    <span class="project-tag">Python</span>
+                  </div>
+                  <a class="project-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3451859" target="_blank">SSRN Paper →</a>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- ALGO 2 — QVM STRATEGY -->
-          <div class="project-card">
-            <div class="project-type">Independent Research · QuantConnect LEAN · 2015–2025</div>
-            <div class="project-title">QVM Composite Score + Macro Timing</div>
-            <div class="project-subtitle">9-Signal Multi-Factor · Two-Sleeve Architecture · Profit Protection</div>
-            <div class="project-desc">
-              A production-grade systematic strategy that extends the F-Score methodology into the post-2000 factor landscape. The QVM Composite Score combines three evidence-based pillars: Quality (gross profitability, cash earnings quality, accruals — Novy-Marx 2013, AQR QMJ 2014, Sloan 1996), Value (EBIT/EV yield, FCF yield, debt reduction — Greenblatt 2005, O'Shaughnessy 2012), and Momentum (12M price return, revenue growth, EPS acceleration — Jegadeesh &amp; Titman 1993, Novy-Marx 2015). A dual macro gate — IWD 200-day SMA and VIX threshold — exits the equity sleeve during sustained downtrends. A high-water mark ratchet permanently transfers 80% of new profits into a GLD + BIL safe haven sleeve at each rebalance, structurally preserving gains.
-            </div>
-            <div class="project-finding">
-              <div class="project-finding-label">Key Metrics (2015–2025)</div>
-              <p>Best 12M Sharpe: <strong>3.09</strong> · Market beta: <strong>0.10</strong> · Max drawdown ~11% vs IWD ~20% · <strong>$410K</strong> locked in GLD+BIL by period end. Macro gate correctly exited before COVID (Mar 2020), 2022 rate shock, and Apr 2025 tariff event.</p>
-            </div>
-            <div class="project-footer" style="flex-direction:column; gap:12px; align-items:flex-start;">
-              <div class="project-tags">
-                <span class="project-tag">QuantConnect LEAN</span>
-                <span class="project-tag">Multi-Factor</span>
-                <span class="project-tag">Macro Timing</span>
-                <span class="project-tag">Capital Preservation</span>
-                <span class="project-tag">Python</span>
+          <div class="project-card" id="card-qvm">
+            <div class="project-header" onclick="toggleProject('card-qvm')">
+              <div class="project-header-left">
+                <div class="project-type">Independent Research · QuantConnect LEAN · 2015–2025</div>
+                <div class="project-title">QVM Composite Score + Macro Timing</div>
+                <div class="project-subtitle">9-signal Quality-Value-Momentum · Two-sleeve profit protection · Low-beta systematic equity</div>
               </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <a class="project-link" href="https://github.com/NeelkanthMehta/qvm-strategy" target="_blank">GitHub →</a>
-                <button onclick="openNotebook()" class="project-link"
-                  style="background:none; border:none; cursor:pointer; padding:0;
-                         font-family:var(--font-mono);">
-                  Research Notebook →
-                </button>
-                <button onclick="openTearsheet()" class="project-link"
-                  style="background:none; border:none; cursor:pointer; padding:0;
-                         font-family:var(--font-mono); color:var(--text-muted);">
-                  Tearsheet (coming soon)
-                </button>
+              <svg class="project-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+            <div class="project-body">
+              <div style="padding-top:20px;">
+                <div class="project-desc">
+                  A production-grade systematic strategy extending the F-Score into the post-2000 factor landscape. The QVM Composite Score combines three pillars grounded in seven academic papers: <strong>Quality</strong> — gross profitability above cross-sectional median (Novy-Marx 2013), positive operating cash flow (AQR QMJ 2014), and CFO exceeding net income i.e. low accruals (Sloan 1996); <strong>Value</strong> — EBIT/Enterprise Value yield above median (Greenblatt 2005), free cash flow yield above median (O'Shaughnessy 2012), and declining Debt/EBITDA; <strong>Momentum</strong> — positive 12-month price return (Jegadeesh &amp; Titman 1993), revenue growth, and EPS acceleration (Novy-Marx 2015). A dual macro gate (IWD 200-SMA + VIX &lt; 30) exits the active equity sleeve during sustained downtrends. A high-water mark ratchet permanently transfers 80% of new profits into GLD + BIL at each rebalance.
+                </div>
+                <div class="project-finding">
+                  <div class="project-finding-label">Key Metrics (Full Period 2015–2025)</div>
+                  <p>Best 12M Sharpe: <strong>3.09</strong> · Market beta: <strong>0.10</strong> · Max drawdown ~11% vs IWD ~20% · <strong>$410K</strong> of profits locked in GLD+BIL safe haven. Macro gate correctly exited before COVID (Mar 2020), 2022 rate shock, and Apr 2025 tariff event.</p>
+                </div>
+                <div class="project-finding" style="margin-top:10px;">
+                  <div class="project-finding-label">Research Finding</div>
+                  <p>Full-period CAGR underperformance vs IWD is consistent with post-publication factor decay in the literature — a finding that is itself a research contribution. The strategy's primary value is architectural: low-beta, crisis-resilient equity exposure with structural profit preservation.</p>
+                </div>
+                <div class="project-footer" style="flex-direction:column; gap:12px; align-items:flex-start;">
+                  <div class="project-tags">
+                    <span class="project-tag">QuantConnect LEAN</span>
+                    <span class="project-tag">Multi-Factor QVM</span>
+                    <span class="project-tag">Macro Timing</span>
+                    <span class="project-tag">Capital Preservation</span>
+                    <span class="project-tag">Python</span>
+                  </div>
+                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <a class="project-link" href="https://github.com/NeelkanthMehta/qvm-strategy" target="_blank">GitHub →</a>
+                    <button onclick="openNotebook()" class="project-link"
+                      style="background:none; border:none; cursor:pointer; padding:0; font-family:var(--font-mono);">
+                      Research Notebook →
+                    </button>
+                    <button onclick="openTearsheet()" class="project-link"
+                      style="background:none; border:none; cursor:pointer; padding:0;
+                             font-family:var(--font-mono); color:var(--text-muted);">
+                      Tearsheet →
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1849,6 +1897,12 @@ Both signals active: 73.3% of days</div>
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // ── COLLAPSIBLE PROJECT CARDS ──
+    function toggleProject(id) {
+      const card = document.getElementById(id);
+      card.classList.toggle('open');
+    }
+
     // ── NOTEBOOK MODAL ──
     function openNotebook() {
       document.getElementById('notebookModal').style.display = 'block';
@@ -1859,7 +1913,7 @@ Both signals active: 73.3% of days</div>
       document.body.style.overflow = '';
     }
     function openTearsheet() {
-      alert('Tearsheet coming soon — performance attribution analysis in progress.');
+      window.open('tearsheet.html', '_blank');
     }
     document.addEventListener('DOMContentLoaded', function() {
       var modal = document.getElementById('notebookModal');
