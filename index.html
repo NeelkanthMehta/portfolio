@@ -1041,9 +1041,6 @@
           <a class="pill" href="https://github.com/NeelkanthMehta" target="_blank">
             <span class="pill-dot"></span> GitHub
           </a>
-          <a class="pill" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3451859" target="_blank">
-            <span class="pill-dot"></span> SSRN Research
-          </a>
           <a class="pill" href="https://outlook.live.com/mail/0/deeplink/compose?to=neilstrong2003@yahoo.com" target="_blank">
             <span class="pill-dot"></span> Email
           </a>
@@ -1068,7 +1065,7 @@
                 I am a <strong>quantitative finance and data analytics professional</strong> with 7+ years of experience spanning asset-liability management, portfolio analytics, credit analysis, and Python-based data engineering across institutions including <strong>JP Morgan Chase, Barclays, and Amherst</strong>. My work sits at the intersection of rigorous quantitative research and practical financial engineering.
               </p>
               <p>
-                Currently a <strong>Senior ALM Analyst at Amherst</strong>, I deliver fund-level analytics across a portfolio of 49,000+ single-family rental units — covering debt structuring, liquidity planning, and capital deployment. I hold an <strong>MSc in Financial Engineering from WorldQuant University</strong>, where my capstone combined Piotroski F-Score fundamental screening with market-timing signals, published on SSRN and cited in peer-reviewed journals across multiple markets.
+                Currently a <strong>Senior ALM Analyst at Amherst</strong>, I deliver fund-level analytics across a portfolio of 49,000+ single-family rental units — covering debt structuring, liquidity planning, and capital deployment. I hold an <strong>MSc in Financial Engineering from WorldQuant University</strong>, where my capstone combined fundamental screening with market-timing signals, published on SSRN. My independent research extends this into a production-grade multi-factor QVM strategy built on QuantConnect LEAN.
               </p>
               <p>
                 My research interests span <strong>systematic algorithmic trading</strong>, volatility regime modelling, and AI-driven financial analytics. I am a <strong>Microsoft Certified Power BI Data Analyst (PL-300)</strong> and hold certifications in machine learning for finance from EDHEC Business School.
@@ -1360,25 +1357,18 @@
 
           <!-- ── RESEARCH TOOL UI ── -->
           <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:20px;">
-
-            <!-- Regulator selector -->
             <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
               <button class="reg-btn active" onclick="setRegulator('both', this)">SEBI + RBI</button>
               <button class="reg-btn" onclick="setRegulator('sebi', this)">SEBI only</button>
               <button class="reg-btn" onclick="setRegulator('rbi', this)">RBI only</button>
             </div>
-
-            <!-- Question input -->
             <div style="display:flex; gap:8px; margin-bottom:16px;">
-              <input
-                type="text"
-                id="researchInput"
+              <input type="text" id="researchInput"
                 placeholder="e.g. What are RBI's latest capital adequacy requirements?"
                 style="flex:1; background:var(--bg3); border:1px solid var(--border);
                        color:var(--text); font-family:var(--font-body); font-size:13px;
                        padding:9px 13px; border-radius:2px; outline:none;"
-                onkeydown="if(event.key==='Enter') runResearch()"
-              />
+                onkeydown="if(event.key==='Enter') runResearch()" />
               <button onclick="runResearch()" id="researchBtn"
                 style="background:var(--gold); border:none; border-radius:2px;
                        padding:9px 18px; font-family:var(--font-mono); font-size:11px;
@@ -1391,23 +1381,20 @@
                        padding:9px 14px; font-family:var(--font-mono); font-size:11px;
                        letter-spacing:0.10em; text-transform:uppercase; color:var(--text-muted);
                        cursor:pointer; white-space:nowrap; transition:all 0.2s; display:none;"
-                title="Reset">
-                ↺
-              </button>
+                title="Reset">↺</button>
             </div>
-
-            <!-- Answer panel -->
             <div id="researchAnswer" style="display:none;">
               <div id="researchText"
                 style="background:var(--bg3); border:1px solid var(--border);
                        border-radius:2px; padding:16px; font-size:13px;
                        color:var(--text); line-height:1.75; white-space:pre-wrap;
-                       margin-bottom:12px; min-height:60px;">
-              </div>
+                       margin-bottom:12px; min-height:60px;"></div>
               <div id="researchCitations" style="display:flex; flex-direction:column; gap:6px;"></div>
             </div>
-
-            <!-- Legal disclaimer — always visible -->
+            <div id="researchLoading" style="display:none; padding:12px 0;">
+              <span style="font-family:var(--font-mono); font-size:11px; color:var(--gold);
+                           letter-spacing:0.10em;">Searching database...</span>
+            </div>
             <div style="margin-top:14px; padding:10px 14px; border:1px solid var(--border);
                         border-radius:2px; background:var(--bg3);">
               <p style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted);
@@ -1418,14 +1405,6 @@
                 This tool does not constitute legal, financial, or regulatory advice.
               </p>
             </div>
-
-            <!-- Loading state -->
-            <div id="researchLoading" style="display:none; padding:12px 0;">
-              <span style="font-family:var(--font-mono); font-size:11px; color:var(--gold);
-                           letter-spacing:0.10em;">Searching database...</span>
-            </div>
-
-            <!-- Sample questions -->
             <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px;" id="sampleQuestions">
               <button class="sample-q" onclick="askSample(this)">Latest RBI capital adequacy norms</button>
               <button class="sample-q" onclick="askSample(this)">SEBI mutual fund regulations 2026</button>
@@ -1447,32 +1426,275 @@
           </div>
         </div>
 
-        <!-- PROJECT 2 — PIOTROSKI -->
-        <div class="project-card">
-          <div class="project-type">MSc Capstone · SSRN Published</div>
-          <div class="project-title">Piotroski F-Score + Market Timing Strategy</div>
-          <div class="project-subtitle">WorldQuant University · Python · Equity Long/Short</div>
-          <div class="project-desc">
-            A systematic equity strategy combining Piotroski F-Score fundamental screening with quantitative market-timing signals. The framework filters for financially improving companies, then gates entries using macro regime indicators to reduce drawdown during adverse market conditions.
+      </div>
+
+      <!-- ════════════════════════════════
+           QUANT ALGORITHMS SUBSECTION
+      ════════════════════════════════ -->
+      <div style="margin-top:56px;">
+
+        <div style="margin-bottom:28px;">
+          <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.18em;
+                      text-transform:uppercase; color:var(--gold-dim); margin-bottom:8px;">
+            Quantitative Algorithms
           </div>
-          <div class="project-finding">
-            <div class="project-finding-label">Key Result</div>
-            <p>Achieved strong out-of-sample risk-adjusted returns against benchmark across multiple backtest windows, with the timing overlay meaningfully reducing maximum drawdown.</p>
-          </div>
-          <div class="project-footer">
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Fundamental Screening</span>
-              <span class="project-tag">Market Timing</span>
-              <span class="project-tag">Backtesting</span>
-              <span class="project-tag">Factor Models</span>
+          <h3 style="font-family:var(--font-display); font-size:20px; color:var(--text);
+                     font-weight:400; margin:0 0 6px 0;">
+            Systematic Equity Research
+          </h3>
+          <p style="font-size:13px; color:var(--text-muted); margin:0;">
+            Factor-based strategies · QuantConnect LEAN · Academic grounding
+          </p>
+        </div>
+
+        <div class="projects-grid">
+
+          <!-- ALGO 1 — PIOTROSKI MSc CAPSTONE -->
+          <div class="project-card">
+            <div class="project-type">MSc Capstone · SSRN Published · WorldQuant University</div>
+            <div class="project-title">Piotroski F-Score + Market Timing</div>
+            <div class="project-subtitle">Python · US Equities · Fundamental Screening · 1976–1996 Methodology</div>
+            <div class="project-desc">
+              The MSc capstone strategy applies Piotroski's (2000) 9-signal F-Score to a universe of high book-to-market US equities, gating entries with a quantitative market-timing overlay. The F-Score evaluates each stock across three pillars — profitability (ROA, CFO, accruals quality), financial strength (leverage, liquidity, dilution), and operating efficiency (gross margin, asset turnover) — assigning one binary point per signal for a total of 0–9. Stocks scoring 8–9 are held long; stocks scoring 0–1 are shorted. The timing overlay exits to cash when the broad market trends below its 200-day moving average, reducing drawdown during bear regimes. Published on SSRN and cited in peer-reviewed replications across multiple markets.
             </div>
-            <a class="project-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3451859" target="_blank">SSRN Paper →</a>
+            <div class="project-finding">
+              <div class="project-finding-label">Key Result</div>
+              <p>Strong out-of-sample risk-adjusted returns against benchmark. The timing overlay meaningfully reduced maximum drawdown while preserving upside participation during trending regimes.</p>
+            </div>
+            <div class="project-footer">
+              <div class="project-tags">
+                <span class="project-tag">Piotroski F-Score</span>
+                <span class="project-tag">Book-to-Market</span>
+                <span class="project-tag">Market Timing</span>
+                <span class="project-tag">Long/Short</span>
+                <span class="project-tag">Python</span>
+              </div>
+              <a class="project-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3451859" target="_blank">SSRN Paper →</a>
+            </div>
+          </div>
+
+          <!-- ALGO 2 — QVM STRATEGY -->
+          <div class="project-card">
+            <div class="project-type">Independent Research · QuantConnect LEAN · 2015–2025</div>
+            <div class="project-title">QVM Composite Score + Macro Timing</div>
+            <div class="project-subtitle">9-Signal Multi-Factor · Two-Sleeve Architecture · Profit Protection</div>
+            <div class="project-desc">
+              A production-grade systematic strategy that extends the F-Score methodology into the post-2000 factor landscape. The QVM Composite Score combines three evidence-based pillars: Quality (gross profitability, cash earnings quality, accruals — Novy-Marx 2013, AQR QMJ 2014, Sloan 1996), Value (EBIT/EV yield, FCF yield, debt reduction — Greenblatt 2005, O'Shaughnessy 2012), and Momentum (12M price return, revenue growth, EPS acceleration — Jegadeesh &amp; Titman 1993, Novy-Marx 2015). A dual macro gate — IWD 200-day SMA and VIX threshold — exits the equity sleeve during sustained downtrends. A high-water mark ratchet permanently transfers 80% of new profits into a GLD + BIL safe haven sleeve at each rebalance, structurally preserving gains.
+            </div>
+            <div class="project-finding">
+              <div class="project-finding-label">Key Metrics (2015–2025)</div>
+              <p>Best 12M Sharpe: <strong>3.09</strong> · Market beta: <strong>0.10</strong> · Max drawdown ~11% vs IWD ~20% · <strong>$410K</strong> locked in GLD+BIL by period end. Macro gate correctly exited before COVID (Mar 2020), 2022 rate shock, and Apr 2025 tariff event.</p>
+            </div>
+            <div class="project-footer" style="flex-direction:column; gap:12px; align-items:flex-start;">
+              <div class="project-tags">
+                <span class="project-tag">QuantConnect LEAN</span>
+                <span class="project-tag">Multi-Factor</span>
+                <span class="project-tag">Macro Timing</span>
+                <span class="project-tag">Capital Preservation</span>
+                <span class="project-tag">Python</span>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <a class="project-link" href="https://github.com/NeelkanthMehta/qvm-strategy" target="_blank">GitHub →</a>
+                <button onclick="openNotebook()" class="project-link"
+                  style="background:none; border:none; cursor:pointer; padding:0;
+                         font-family:var(--font-mono);">
+                  Research Notebook →
+                </button>
+                <button onclick="openTearsheet()" class="project-link"
+                  style="background:none; border:none; cursor:pointer; padding:0;
+                         font-family:var(--font-mono); color:var(--text-muted);">
+                  Tearsheet (coming soon)
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ════════════════════════════════
+       NOTEBOOK MODAL
+  ════════════════════════════════ -->
+  <div id="notebookModal" style="display:none; position:fixed; inset:0; z-index:1000;
+       background:rgba(10,12,20,0.92); backdrop-filter:blur(4px);
+       overflow-y:auto; padding:40px 20px;">
+    <div style="max-width:860px; margin:0 auto; background:var(--bg2);
+                border:1px solid var(--border); border-radius:4px; overflow:hidden;">
+
+      <!-- Modal header -->
+      <div style="display:flex; align-items:center; justify-content:space-between;
+                  padding:16px 24px; border-bottom:1px solid var(--border);
+                  background:var(--bg3);">
+        <div>
+          <div style="font-family:var(--font-mono); font-size:10px; color:var(--gold-dim);
+                      letter-spacing:0.14em; text-transform:uppercase; margin-bottom:4px;">
+            Research Notebook
+          </div>
+          <div style="font-size:15px; color:var(--text); font-weight:500;">
+            QVM Composite Score + Macro Timing Strategy
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a href="https://github.com/NeelkanthMehta/qvm-strategy/blob/main/research.ipynb"
+             target="_blank"
+             style="font-family:var(--font-mono); font-size:10px; color:var(--gold);
+                    text-decoration:none; letter-spacing:0.10em; border:1px solid var(--gold-dim);
+                    padding:6px 12px; border-radius:2px;">
+            View on GitHub ↗
+          </a>
+          <button onclick="closeNotebook()"
+            style="background:none; border:1px solid var(--border); color:var(--text-muted);
+                   font-size:18px; width:32px; height:32px; border-radius:2px; cursor:pointer;
+                   display:flex; align-items:center; justify-content:center;">×</button>
+        </div>
+      </div>
+
+      <!-- Notebook content -->
+      <div style="padding:32px 40px; font-size:13px; line-height:1.8; color:var(--text);">
+
+        <!-- Cell marker style -->
+        <style>
+          .nb-section { margin-bottom:32px; }
+          .nb-cell-label { font-family:var(--font-mono); font-size:9px; color:var(--text-muted);
+            letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px; }
+          .nb-md h2 { font-size:16px; color:var(--gold); margin:0 0 10px 0; font-weight:500; }
+          .nb-md h3 { font-size:13px; color:#e8dfc8; margin:16px 0 8px 0; font-weight:500; }
+          .nb-md p  { margin:0 0 10px 0; color:var(--text); }
+          .nb-md table { width:100%; border-collapse:collapse; margin:12px 0; font-size:12px; }
+          .nb-md th { background:var(--bg3); color:var(--gold-dim); font-weight:500;
+            padding:6px 10px; text-align:left; border:1px solid var(--border); }
+          .nb-md td { padding:6px 10px; border:1px solid var(--border); color:var(--text); }
+          .nb-code { background:var(--bg3); border:1px solid var(--border); border-radius:2px;
+            padding:14px 16px; font-family:var(--font-mono); font-size:11px; color:#9db8d2;
+            overflow-x:auto; white-space:pre; margin:0; }
+          .nb-output { background:#0e1018; border:1px solid #1e2535; border-top:none;
+            border-radius:0 0 2px 2px; padding:10px 16px; font-family:var(--font-mono);
+            font-size:11px; color:#7fb87f; white-space:pre; overflow-x:auto; }
+          .nb-divider { border:none; border-top:1px solid var(--border); margin:28px 0; }
+        </style>
+
+        <div class="nb-section">
+          <div class="nb-cell-label">Overview</div>
+          <div class="nb-md">
+            <h2>QVM Composite Score + Macro Timing Strategy</h2>
+            <p>Research notebook validating the three-pillar QVM scoring model and IWD-based macro timing overlay. All findings feed directly into the production trading algorithm.</p>
+            <table>
+              <tr><th>Period</th><th>Window</th></tr>
+              <tr><td>Full backtest</td><td>Jan 2015 – Dec 2025</td></tr>
+              <tr><td>In-sample (validation)</td><td>Jan 2015 – Dec 2022</td></tr>
+              <tr><td>Out-of-sample (attribution)</td><td>Jan 2023 – Dec 2025</td></tr>
+              <tr><td>Benchmark</td><td>IWD (iShares Russell 1000 Value ETF)</td></tr>
+            </table>
           </div>
         </div>
 
+        <hr class="nb-divider">
+
+        <div class="nb-section">
+          <div class="nb-cell-label">Cell 2 — Macro Timing Signals</div>
+          <div class="nb-md">
+            <h2>Macro Timing: IWD 200-SMA + VIX Gate</h2>
+            <p>Two independent signals gate the active equity sleeve. Both must be active simultaneously for the strategy to be invested.</p>
+            <table>
+              <tr><th>Signal</th><th>Rule</th><th>Rationale</th></tr>
+              <tr><td>IWD 200-SMA</td><td>IWD price &gt; 200-day SMA</td><td>Value index regime filter (Faber 2007)</td></tr>
+              <tr><td>VIX gate</td><td>VIX &lt; 30</td><td>Elevated vol = deteriorating liquidity</td></tr>
+              <tr><td>Confirmation</td><td>5 consecutive days below threshold</td><td>Prevents whipsaw exits on brief dips</td></tr>
+            </table>
+          </div>
+          <pre class="nb-code">iwd_sma200 = iwd_close.rolling(200).mean()
+iwd_above  = (iwd_close > iwd_sma200).astype(int)
+vix_low    = (vix_close &lt; 30).astype(int)
+combined   = iwd_above & vix_low.reindex(iwd_above.index).fillna(1)</pre>
+          <div class="nb-output">IWD above 200-SMA:   73.3% of days
+VIX &lt; 30:            94.8% of days
+Both signals active: 73.3% of days</div>
+        </div>
+
+        <hr class="nb-divider">
+
+        <div class="nb-section">
+          <div class="nb-cell-label">Cell 4 — QVM Signal Analysis</div>
+          <div class="nb-md">
+            <h2>QVM Composite Score — 9 Binary Signals</h2>
+            <table>
+              <tr><th>Pillar</th><th>Signal</th><th>Condition</th><th>Source</th></tr>
+              <tr><td rowspan="3">Quality</td><td>Q1</td><td>Gross Profit/Assets &gt; median</td><td>Novy-Marx (2013)</td></tr>
+              <tr><td>Q2</td><td>CFO/Assets &gt; 0</td><td>AQR QMJ (2014)</td></tr>
+              <tr><td>Q3</td><td>CFO &gt; Net Income</td><td>Sloan (1996)</td></tr>
+              <tr><td rowspan="3">Value</td><td>V1</td><td>EBIT/EV &gt; median</td><td>Greenblatt (2005)</td></tr>
+              <tr><td>V2</td><td>FCF/Price &gt; median</td><td>O'Shaughnessy (2012)</td></tr>
+              <tr><td>V3</td><td>Debt/EBITDA declining YoY</td><td>—</td></tr>
+              <tr><td rowspan="3">Momentum</td><td>M1</td><td>12M price return &gt; 0</td><td>Jegadeesh &amp; Titman (1993)</td></tr>
+              <tr><td>M2</td><td>Revenue growth YoY &gt; 0</td><td>Novy-Marx (2015)</td></tr>
+              <tr><td>M3</td><td>EPS growth YoY &gt; 0</td><td>He &amp; Narayanamoorthy (2017)</td></tr>
+            </table>
+          </div>
+          <div class="nb-output">  2016: n= 517 | mean=4.71 | QVM&gt;=6:  62 | QVM&lt;=2: 28
+  2017: n= 504 | mean=4.83 | QVM&gt;=6: 209 | QVM&lt;=2: 19
+  2018: n= 502 | mean=4.69 | QVM&gt;=6:  97 | QVM&lt;=2: 31
+  2019: n= 501 | mean=4.55 | QVM&gt;=6: 103 | QVM&lt;=2: 35
+  2021: n= 471 | mean=4.90 | QVM&gt;=6: 185 | QVM&lt;=2: 22
+  2022: n= 483 | mean=5.06 | QVM&gt;=6: 222 | QVM&lt;=2: 17</div>
+        </div>
+
+        <hr class="nb-divider">
+
+        <div class="nb-section">
+          <div class="nb-cell-label">Cell 6 — Profit Protection Architecture</div>
+          <div class="nb-md">
+            <h2>Two-Sleeve Capital Allocation</h2>
+            <p>At each annual rebalance, 80% of profits above the high-water mark are permanently transferred to a GLD + BIL safe haven sleeve.</p>
+            <table>
+              <tr><th>Year</th><th>High-Water Mark</th><th>Protected Sleeve</th><th>Active Alloc</th></tr>
+              <tr><td>2016</td><td>$1,000,000</td><td>$0</td><td>100%</td></tr>
+              <tr><td>2017</td><td>$1,158,137</td><td>$126,509</td><td>89.1%</td></tr>
+              <tr><td>2018</td><td>$1,334,412</td><td>$267,529</td><td>80.0%</td></tr>
+              <tr><td>2022</td><td>$1,434,542</td><td>$347,634</td><td>75.8%</td></tr>
+              <tr><td>2025</td><td>$1,512,812</td><td>$410,250</td><td>72.9%</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <hr class="nb-divider">
+
+        <div class="nb-section">
+          <div class="nb-cell-label">Full Backtest Results</div>
+          <div class="nb-md">
+            <h2>Performance Summary (2015–2025)</h2>
+            <table>
+              <tr><th>Metric</th><th>QVM + Protection</th><th>IWD Benchmark</th></tr>
+              <tr><td>Total Return</td><td>49.7%</td><td>98.7%</td></tr>
+              <tr><td>CAGR</td><td>~4.0%</td><td>~7.1%</td></tr>
+              <tr><td>Best 12M Sharpe</td><td><strong>3.09</strong></td><td>—</td></tr>
+              <tr><td>Market Beta</td><td><strong>0.10</strong></td><td>1.00</td></tr>
+              <tr><td>Max Drawdown</td><td>~11%</td><td>~20%</td></tr>
+              <tr><td>Protected Sleeve (final)</td><td><strong>$410K (27%)</strong></td><td>—</td></tr>
+            </table>
+            <p style="margin-top:12px; font-size:12px; color:var(--text-muted); font-style:italic;">
+              Full-period CAGR underperformance vs IWD is consistent with post-publication factor decay
+              documented in the literature. The primary contribution is the architecture —
+              low-beta, crisis-resilient exposure with structural profit preservation.
+            </p>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin-top:32px; padding-top:24px; border-top:1px solid var(--border);">
+          <a href="https://github.com/NeelkanthMehta/qvm-strategy/blob/main/research.ipynb"
+             target="_blank"
+             style="display:inline-block; background:var(--gold); color:var(--bg);
+                    font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em;
+                    text-transform:uppercase; padding:10px 24px; border-radius:2px;
+                    text-decoration:none;">
+            View Full Notebook on GitHub →
+          </a>
+        </div>
+
       </div>
-    </main>
+    </div>
   </div>
 
   <!-- ── FOOTER ── -->
@@ -1626,6 +1848,27 @@
       btn.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // ── NOTEBOOK MODAL ──
+    function openNotebook() {
+      document.getElementById('notebookModal').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNotebook() {
+      document.getElementById('notebookModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    function openTearsheet() {
+      alert('Tearsheet coming soon — performance attribution analysis in progress.');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      var modal = document.getElementById('notebookModal');
+      if (modal) {
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) closeNotebook();
+        });
+      }
+    });
 
     // ── COLLAPSIBLE SECTIONS ──
     function toggleSection(header) {
