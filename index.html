@@ -1566,6 +1566,55 @@
     </main>
   </div>
 
+
+          <!-- ALGO 3 — MULTI-ASSET RISK DASHBOARD -->
+          <div class="project-card" id="card-risk-dashboard">
+            <div class="project-header" onclick="toggleProject('card-risk-dashboard')">
+              <div class="project-header-left">
+                <div class="project-type" style="color:var(--green);">● Live · Interactive Dashboard · Python · Streamlit · Plotly</div>
+                <div class="project-title">Multi-Asset Risk Dashboard</div>
+                <div class="project-subtitle">Indian equities · NSE · Factor exposure · Vol regime · VaR/CVaR · Drawdown · Live data</div>
+              </div>
+              <svg class="project-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+            <div class="project-body">
+              <div style="padding-top:20px;">
+                <div class="project-desc">
+                  An interactive risk analytics dashboard for user-constructed Indian equity portfolios. Users pick NSE tickers and weights; the dashboard fetches live price data and computes five analytics modules in real time: factor exposure (Momentum, Value, Size — cross-sectional z-scores), volatility regime detection (2-state Gaussian HMM on realised vol), rolling correlation heatmap (configurable 30/60/90/252-day window), historical simulation VaR and CVaR at 95% and 99% confidence, and drawdown analysis (underwater equity curve, max drawdown, recovery days). Built with Streamlit and Plotly, deployed on Streamlit Community Cloud.
+                </div>
+                <div class="project-finding">
+                  <div class="project-finding-label">Design Highlight</div>
+                  <p>Volatility regime classification uses a 2-state Hidden Markov Model with 50 random restarts on a 2D feature (realised vol + absolute return), ensuring stable Low/High state separation even in low-dispersion environments. Factor scores are cross-sectionally z-normalised and aggregated to a portfolio-level composite exposure row.</p>
+                </div>
+                <div class="project-footer" style="flex-direction:column; gap:12px; align-items:flex-start;">
+                  <div class="project-tags">
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Streamlit</span>
+                    <span class="project-tag">Plotly</span>
+                    <span class="project-tag">HMM</span>
+                    <span class="project-tag">VaR / CVaR</span>
+                    <span class="project-tag">Factor Models</span>
+                    <span class="project-tag">NSE · yfinance</span>
+                  </div>
+                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <a class="project-link" href="https://github.com/NeelkanthMehta/risk-dashboard" target="_blank">GitHub →</a>
+                    <a class="project-link"
+                      href="https://risk-dashboard-cwe6uvjazghw9uaaqchtzo.streamlit.app"
+                      target="_blank"
+                      style="border:1px solid var(--gold-dim); padding:4px 10px;
+                             color:var(--gold); border-radius:2px; transition:background 0.2s, color 0.2s;"
+                      onmouseover="this.style.background='var(--gold)';this.style.color='var(--bg)'"
+                      onmouseout="this.style.background='none';this.style.color='var(--gold)'">
+                      ↗ Live Dashboard
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
   <!-- ════════════════════════════════
        NOTEBOOK MODAL
   ════════════════════════════════ -->
